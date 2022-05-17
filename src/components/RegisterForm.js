@@ -1,41 +1,40 @@
-
 import React, { useState } from "react";
-import validateInfo from "./ValidateInfo";
-import useForm from './useForm'
 
+function RegisterForm({ Register, error }) {
+  //   detaljer för form rad 13
+  const [register, setRegister] = useState({ name: "", email: "", password: "" });
+  //   Hantera Submit
+  const submitHandler = e => {
+    e.preventDefault();
+    localStorage.setItem('name', register.name)
+    localStorage.setItem('email', register.email)
+    localStorage.setItem('password', register.password)
+    Register(register)
+  }
+  return (
+    //   anropa submitHandler funktion
+    <form onSubmit={submitHandler}>
+      <div className="form-inner">
+        <h2>Register</h2>
+        {(error != "") ? (<div className="error">{error}</div>) : ""}
+        <div className="form-group">
+          <label htmlFor="name">Name:</label>
+          <input type="text" name="name" id="name" onChange={e => setRegister({ ...register, name: e.target.value })} value={register.name} />
+        </div>
 
-  const RegisterForm = ({ submitForm }) => {
-    const { handleChange, handleSubmit, values, errors} = useForm(
-      submitForm,
-      validateInfo
-    );
+        <div className="form-group">
+          <label htmlFor="email">Email:</label>
+          <input type="email" name="email" id="email" onChange={e => setRegister({ ...register, email: e.target.value })} value={register.email} />
+        </div>
 
-    return (
-//   anropa submitHandler funktion
-  <form onSubmit={handleSubmit}>
-<div className="form-inner">
-<h2>Register</h2>
-
-<div className="form-group"> 
-<input placeholder="Name" type="text" name="name" id="name" value={values.username} onChange={handleChange} />
-</div>
-
-<div className="form-group">
-<input placeholder="Email" type="email" name="email" id="email" value={values.email} onChange={handleChange} />
-</div>
- 
- <div className="form-group">
-<input placeholder="Password" type="password" name="password" id="password" value={values.password} onChange={handleChange} />
- </div>
- 
- <div className="form-group">
- 
-<input placeholder="Confirm Password" type="password" name="password_confirmation" id="password" value={values.password2} onChange={handleChange} />
- </div>
-
-<input type="submit" value="REGISTER" />
-    </div>
-  </form>
-)}
+        <div className="form-group">
+          <label htmlFor="password">Password:</label>
+          <input type="password" name="password" id="password" onChange={e => setRegister({ ...register, password: e.target.value })} value={register.password} />
+        </div>
+        <input type="submit" value="Register" />
+      </div>
+    </form>
+  )
+}
 
 export default RegisterForm;
